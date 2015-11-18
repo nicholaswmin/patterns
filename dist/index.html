@@ -1,0 +1,1796 @@
+
+<div class="components-page__container"><br/>
+  <hr/><br/>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons"/>
+  <link rel="stylesheet" href="/patterns/dist/base/base.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="/patterns/dist/base/libs/highlight/styles/xcode.css"/>
+  <script src="/patterns/dist/base/libs/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script><br/>
+  <hr/><br/>
+  <link rel="stylesheet" href="/patterns/dist/accordion/css/styles.css"/>
+  <!-- Header(ignore this, only for informative purposes)-->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons"/>
+  <link rel="stylesheet" href="/patterns/dist/base/base.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="/patterns/dist/base/libs/highlight/styles/xcode.css"/>
+  <script src="/patterns/dist/base/libs/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <header>
+    <h3>Minimal Accordion
+      <h3>
+        <h5>Accordion that transforms into article-view</h5>
+        <h5 onclick="this.nextElementSibling.classList.toggle('is-visible')" class="header__usage-label">
+           
+          Get usage information.
+        </h5>
+        <div class="header__usage-info">
+          <p>Scrolls with momentum-scrolling on iOS Webkit</p>
+          <p>
+            Delete button is a double-action button, negating the 
+            need for confirmatory/blocking modals
+          </p>
+          <hr/>
+          <ul>
+            <li>
+              The jQuery snippet is mandatory to be used alongside this block
+              for select/double-action button behaviours. 
+              If you don't need these behaviours, you can skip including any JS.
+            </li>
+          </ul>
+          <ul>
+            <li>Clone the element's HTML</li>
+            <li>Clone the component's SCSS and tweak the variables as you see fit.</li>
+            <li>Clone the component's JS (if needed) and use appropriately.</li>
+          </ul>
+          <ul>
+            <li>
+              Modifiers can be applied as an extra
+              class on the parent container,<code>.scroll-list</code> to transform the
+                          component in it's different versions.
+            </li>
+            <li>
+              Note that class-naming follows Block-Element--Modifier(BEM)
+              conventions.
+            </li>
+          </ul>
+          <hr/>
+          <h5>Available modifiers:</h5><code>.scroll-list--horizontal</code>
+          <!-- Code Begins-->
+          <hr/>
+          <!-- JADE Code-->
+          <h5 class="header__code-type">HTML </h5><em>JADE syntax also available in source files</em>
+          <pre><code>&lt;!-- Scroll List Component--&gt;
+&lt;section class=&quot;scroll-list__container&quot;&gt;
+  &lt;div class=&quot;scroll-list__button-container&quot;&gt;Button&lt;/div&gt;
+  &lt;div class=&quot;scroll-list&quot;&gt;
+    &lt;!-- List Item (This is the fragment you should be repeating)--&gt;
+    &lt;div class=&quot;scroll-list__item&quot;&gt;
+      &lt;span class=&quot;scroll-list__item__label&quot;&gt;Item&lt;/span&gt;
+      &lt;span class=&quot;scroll-list__item__delete-button&quot;&gt;
+        &lt;i class=&quot;material-icons&quot;&gt;delete&lt;/i&gt;
+        &lt;span class=&quot;scroll-list-item__delete-button__confirm&quot;&gt;Delete&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;!-- /List Item--&gt;
+&lt;/section&gt;
+&lt;!-- /Scroll List Component--&gt;
+
+
+&lt;script&gt;
+  $(document).ready(function() {
+
+    // Select
+    $(document).on('click touchend', '.scroll-list__item', function(e) {
+      $('.scroll-list__item').removeClass('is-active');
+      $(this).addClass('is-active');
+    })
+
+    // Arm Deletion
+    $(document).on('click touchend', '.scroll-list__item__delete-button', function(e) {
+      $(this).addClass('is-primed');
+      var self = this;
+      setTimeout(function() {
+        $(self).removeClass('is-primed');
+      }, 2000)
+    });
+
+  });
+&lt;/script&gt;
+</code></pre>
+          <!-- SCSS Code-->
+          <hr/>
+          <h5 class="header__code-type">SCSS</h5>
+          <pre><code>/**
+ * List Component
+ */
+
+$scroll-list-height: 15em;
+$scroll-list-bg-color: #fff;
+$scroll-list-color: #aaa;
+$scroll-list-color-action: #007AFF;
+$scroll-list-color-danger: #FF2D55;
+$scroll-list-border-radius: 4px;
+$scroll-list-border-width: 1px;
+$scroll-list-spacer-height: 3.5em;
+$scroll-list-base-duration: 0.1s;
+$scroll-list-base-timing: linear;
+$white: #fff;
+
+.scroll-list__container {
+  margin: 0 auto;
+  width: 9em;
+  height: $scroll-list-height;
+}
+
+.scroll-list__button-container {
+  padding: 1em 0em;
+  color: $white;
+  text-align: center;
+  background-color: $scroll-list-color-action;
+  border-radius: $scroll-list-border-radius;
+}
+
+.scroll-list {
+  max-height: 100%;
+  margin-top: 0.5em;
+  padding: 6px; // space for scaled first active item
+  pointer-events: all;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0px);
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-perspective: 1000;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  &.scroll-list--horizontal {
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
+}
+
+.scroll-list__item {
+  background-color: $scroll-list-bg-color;
+  color: $scroll-list-color;
+  border: $scroll-list-border-width solid;
+  border-radius: $scroll-list-border-radius;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+
+  transition: transform $scroll-list-base-duration $scroll-list-base-timing,
+    color $scroll-list-base-duration $scroll-list-base-timing,
+    border-color $scroll-list-base-duration $scroll-list-base-timing;
+
+  -webkit-transition: transform $scroll-list-base-duration $scroll-list-base-timing,
+    color $scroll-list-base-duration $scroll-list-base-timing,
+    border-color $scroll-list-base-duration $scroll-list-base-timing;
+
+  &.is-active {
+    color: $scroll-list-color-action;
+    border-color: $scroll-list-color-action;
+    transition: transform color border-color $scroll-list-base-duration*4 $scroll-list-base-timing;
+    transform: scale(1.05,1.05);
+    -webkit-transform: scale(1.05,1.05);
+  }
+
+  .scroll-list--horizontal & {
+    display: inline-block;
+    margin: 0 1em 0 0;
+  }
+}
+
+.scroll-list__item__label,
+.scroll-list__item__delete-button {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0.75em 0.1em;
+  text-align: center;
+}
+
+.scroll-list__item__label {
+  pointer-events: none; // clicks/taps on whole item itself target the parent.
+  width: 4.5em;
+}
+
+.scroll-list__item__delete-button {
+  position: relative;
+  width: 3.5em;
+  text-align: right;
+
+  i,span {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    transition: transform $scroll-list-base-duration linear;
+  }
+
+  /**
+   * Double-action delete button
+   *
+   * If parent of i & span has `is-primed` class
+   * we show `span`, otherwise the icon `i`.
+   *
+   * - `i` and `span` are positioned absolute on top of each other
+   *    and we use `scale(0,0)` & `scale(1,1)` to show/hide them.
+   */
+  i {
+    color: $scroll-list-color;
+    padding: 0.4em 0;
+    pointer-events: none;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+  }
+  span {
+    font-size: 0.8em;
+    padding: 1.1em 0;
+    transform: scale(0,0);
+    -webkit-transform: scale(0,0);
+  }
+
+  &.is-primed {
+    color: $scroll-list-color-danger;
+    border-left: $scroll-list-border-width solid;
+    i {
+      transform: scale(0,0);
+      -webkit-transform: scale(0,0);
+    }
+    span {
+      transform: scale(1,1);
+      -webkit-transform: scale(1,1);
+
+      &:active {
+        background-color: $scroll-list-color-danger;
+        color: #fff;
+      }
+    }
+  }
+}
+// /List component</code></pre>
+        </div>
+      </h3>
+    </h3>
+  </header>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div>
+  <div onclick="this.classList.toggle('accordion--folded')" class="accordion accordion--folded">
+    <div class="accordion__title">
+      <h1>The Origin of Species</h1>
+      <h2>By means of Natural Selection</h2>
+    </div>
+    <div class="accordion__author"><img src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg" class="accordion-text__profile__img"/>
+      <h5>By Charles Darwin</h5>
+    </div>
+    <div class="accordion__author__details">
+      <h6>Fellow of the Royal, Geological, etc Societies;</h6>
+      <h6>Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'</h6>
+    </div>
+    <div class="accordion-text__content">
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        It has roots in a piece of classical Latin literature from 45 BC, 
+        making it over 2000 years old. Richard McClintock, a Latin professor at 
+        Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        the cites of the word in classical literature, discovered the undoubtable 
+        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        sit amet..", comes from a line in section 1.10.32.
+      </p>
+    </div>
+  </div><br/><br/><br/>
+  <hr/><br/><br/><br/>
+  <link rel="stylesheet" href="/patterns/dist/scroll-list/css/styles.css"/>
+  <!-- Header(ignore this, only for informative purposes)-->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons"/>
+  <link rel="stylesheet" href="/patterns/dist/base/base.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="/patterns/dist/base/libs/highlight/styles/xcode.css"/>
+  <script src="/patterns/dist/base/libs/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <header>
+    <h3>Scroll-List--iOS
+      <h3>
+        <h5>An iOS compatible scroll list with double action buttons</h5>
+        <h5 onclick="this.nextElementSibling.classList.toggle('is-visible')" class="header__usage-label">
+           
+          Get usage information.
+        </h5>
+        <div class="header__usage-info">
+          <p>Scrolls with momentum-scrolling on iOS Webkit</p>
+          <p>
+            Delete button is a double-action button, negating the 
+            need for confirmatory/blocking modals
+          </p>
+          <hr/>
+          <ul>
+            <li>
+              The jQuery snippet is mandatory to be used alongside this block
+              for select/double-action button behaviours. 
+              If you don't need these behaviours, you can skip including any JS.
+            </li>
+          </ul>
+          <ul>
+            <li>Clone the element's HTML</li>
+            <li>Clone the component's SCSS and tweak the variables as you see fit.</li>
+            <li>Clone the component's JS (if needed) and use appropriately.</li>
+          </ul>
+          <ul>
+            <li>
+              Modifiers can be applied as an extra
+              class on the parent container,<code>.scroll-list</code> to transform the
+                          component in it's different versions.
+            </li>
+            <li>
+              Note that class-naming follows Block-Element--Modifier(BEM)
+              conventions.
+            </li>
+          </ul>
+          <hr/>
+          <h5>Available modifiers:</h5><code>.scroll-list--horizontal</code>
+          <!-- Code Begins-->
+          <hr/>
+          <!-- JADE Code-->
+          <h5 class="header__code-type">HTML </h5><em>JADE syntax also available in source files</em>
+          <pre><code>&lt;!-- Scroll List Component--&gt;
+&lt;section class=&quot;scroll-list__container&quot;&gt;
+  &lt;div class=&quot;scroll-list__button-container&quot;&gt;Button&lt;/div&gt;
+  &lt;div class=&quot;scroll-list&quot;&gt;
+    &lt;!-- List Item (This is the fragment you should be repeating)--&gt;
+    &lt;div class=&quot;scroll-list__item&quot;&gt;
+      &lt;span class=&quot;scroll-list__item__label&quot;&gt;Item&lt;/span&gt;
+      &lt;span class=&quot;scroll-list__item__delete-button&quot;&gt;
+        &lt;i class=&quot;material-icons&quot;&gt;delete&lt;/i&gt;
+        &lt;span class=&quot;scroll-list-item__delete-button__confirm&quot;&gt;Delete&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;!-- /List Item--&gt;
+&lt;/section&gt;
+&lt;!-- /Scroll List Component--&gt;
+
+
+&lt;script&gt;
+  $(document).ready(function() {
+
+    // Select
+    $(document).on('click touchend', '.scroll-list__item', function(e) {
+      $('.scroll-list__item').removeClass('is-active');
+      $(this).addClass('is-active');
+    })
+
+    // Arm Deletion
+    $(document).on('click touchend', '.scroll-list__item__delete-button', function(e) {
+      $(this).addClass('is-primed');
+      var self = this;
+      setTimeout(function() {
+        $(self).removeClass('is-primed');
+      }, 2000)
+    });
+
+  });
+&lt;/script&gt;
+</code></pre>
+          <!-- SCSS Code-->
+          <hr/>
+          <h5 class="header__code-type">SCSS</h5>
+          <pre><code>/**
+ * List Component
+ */
+
+$scroll-list-height: 15em;
+$scroll-list-bg-color: #fff;
+$scroll-list-color: #aaa;
+$scroll-list-color-action: #007AFF;
+$scroll-list-color-danger: #FF2D55;
+$scroll-list-border-radius: 4px;
+$scroll-list-border-width: 1px;
+$scroll-list-spacer-height: 3.5em;
+$scroll-list-base-duration: 0.1s;
+$scroll-list-base-timing: linear;
+$white: #fff;
+
+.scroll-list__container {
+  margin: 0 auto;
+  width: 9em;
+  height: $scroll-list-height;
+}
+
+.scroll-list__button-container {
+  padding: 1em 0em;
+  color: $white;
+  text-align: center;
+  background-color: $scroll-list-color-action;
+  border-radius: $scroll-list-border-radius;
+}
+
+.scroll-list {
+  max-height: 100%;
+  margin-top: 0.5em;
+  padding: 6px; // space for scaled first active item
+  pointer-events: all;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0px);
+  -webkit-transform: translate3d(0,0,0);
+  -webkit-perspective: 1000;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  &.scroll-list--horizontal {
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
+}
+
+.scroll-list__item {
+  background-color: $scroll-list-bg-color;
+  color: $scroll-list-color;
+  border: $scroll-list-border-width solid;
+  border-radius: $scroll-list-border-radius;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+
+  transition: transform $scroll-list-base-duration $scroll-list-base-timing,
+    color $scroll-list-base-duration $scroll-list-base-timing,
+    border-color $scroll-list-base-duration $scroll-list-base-timing;
+
+  -webkit-transition: transform $scroll-list-base-duration $scroll-list-base-timing,
+    color $scroll-list-base-duration $scroll-list-base-timing,
+    border-color $scroll-list-base-duration $scroll-list-base-timing;
+
+  &.is-active {
+    color: $scroll-list-color-action;
+    border-color: $scroll-list-color-action;
+    transition: transform color border-color $scroll-list-base-duration*4 $scroll-list-base-timing;
+    transform: scale(1.05,1.05);
+    -webkit-transform: scale(1.05,1.05);
+  }
+
+  .scroll-list--horizontal & {
+    display: inline-block;
+    margin: 0 1em 0 0;
+  }
+}
+
+.scroll-list__item__label,
+.scroll-list__item__delete-button {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0.75em 0.1em;
+  text-align: center;
+}
+
+.scroll-list__item__label {
+  pointer-events: none; // clicks/taps on whole item itself target the parent.
+  width: 4.5em;
+}
+
+.scroll-list__item__delete-button {
+  position: relative;
+  width: 3.5em;
+  text-align: right;
+
+  i,span {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    transition: transform $scroll-list-base-duration linear;
+  }
+
+  /**
+   * Double-action delete button
+   *
+   * If parent of i & span has `is-primed` class
+   * we show `span`, otherwise the icon `i`.
+   *
+   * - `i` and `span` are positioned absolute on top of each other
+   *    and we use `scale(0,0)` & `scale(1,1)` to show/hide them.
+   */
+  i {
+    color: $scroll-list-color;
+    padding: 0.4em 0;
+    pointer-events: none;
+    transform: scale(1,1);
+    -webkit-transform: scale(1,1);
+  }
+  span {
+    font-size: 0.8em;
+    padding: 1.1em 0;
+    transform: scale(0,0);
+    -webkit-transform: scale(0,0);
+  }
+
+  &.is-primed {
+    color: $scroll-list-color-danger;
+    border-left: $scroll-list-border-width solid;
+    i {
+      transform: scale(0,0);
+      -webkit-transform: scale(0,0);
+    }
+    span {
+      transform: scale(1,1);
+      -webkit-transform: scale(1,1);
+
+      &:active {
+        background-color: $scroll-list-color-danger;
+        color: #fff;
+      }
+    }
+  }
+}
+// /List component
+
+</code></pre>
+        </div>
+        <h5 class="header__demo-instructions">Select/Delete a List Item</h5>
+      </h3>
+    </h3>
+  </header>
+  <!-- Scroll List Component-->
+  <section class="scroll-list__container">
+    <div class="scroll-list__button-container">Primary Action</div>
+    <div class="scroll-list">
+      <!-- List Item (This is the fragment you should be repeating)-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+    </div>
+  </section>
+  <!-- /Scroll List Component--><br/><br/><br/><br/><br/><br/><br/>
+  <!-- Scroll List Component --Horizontal-->
+  <section class="scroll-list__container scroll-list--horizontal">
+    <div class="scroll-list__button-container">Primary Action</div>
+    <div class="scroll-list">
+      <!-- List Item (This is the fragment you should be repeating)-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+      <div class="scroll-list__item"><span class="scroll-list__item__label">Item</span><span class="scroll-list__item__delete-button"><i class="material-icons">delete</i><span class="scroll-list-item__delete-button__confirm">Delete</span></span></div>
+      <!-- /List Item-->
+    </div>
+  </section>
+  <!-- /Scroll List Component --Horizontal-->
+  <script>
+    $(document).ready(function() {
+    
+      // Select
+      $(document).on('click touchend', '.scroll-list__item', function(e) {
+        $('.scroll-list__item').removeClass('is-active');
+        $(this).addClass('is-active');
+      })
+      
+      
+      // Arm Deletion
+      $(document).on('click touchend', '.scroll-list__item__delete-button', function(e) {
+        $(this).addClass('is-primed');
+        var self = this;
+        setTimeout(function() {
+          $(self).removeClass('is-primed');
+        }, 2000)
+      });
+      
+    });
+  </script><br/><br/><br/><br/><br/><br/>
+  <hr/><br/>
+  <link rel="stylesheet" href="/patterns/dist/tile-list/css/styles.css"/>
+  <!-- Header(ignore this, only for informative purposes)-->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons"/>
+  <link rel="stylesheet" href="/patterns/dist/base/base.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="/patterns/dist/base/libs/highlight/styles/xcode.css"/>
+  <script src="/patterns/dist/base/libs/highlight/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <header>
+    <h3>Tile-List--GIF
+      <h3>
+        <h5>A tile list with GIF's that play on demand</h5>
+        <h5 onclick="this.nextElementSibling.classList.toggle('is-visible')" class="header__usage-label">Get usage information.</h5>
+        <div class="header__usage-info">
+          <p>A solution to showcasing multiple GIF images without clogging the browser FPS.</p>
+          <p>
+            On instantiating the element, a static placeholder of the 1st frame of
+            the GIF is cloned using `canvas`.
+          </p>
+          <p>
+            The cropping uses the Tiles width/height and scaling coefficients,
+            (What would be width/height of the image after any <code>CSS transforms</code>)
+          </p>
+          <p>
+            The static placeholder is used as a
+            mock overlay to hide the original GIF which is removed from the rendering cycle
+            using `display:none`. On re-activation of the Tile the opposite happens.
+            This allows rendering the GIF's on-demand, thus more control over performance.
+          </p>
+          <hr/>
+          <ul>
+            <li>
+              The JS instantiation is optional. You can pre-process the GIF in
+              the exact same way and deliver it with the GIF. This is the recommended way to go about it.
+            </li>
+          </ul>
+          <ul>
+            <li>Clone the element's HTML</li>
+            <li>Clone the component's SCSS and tweak the variables as you see fit.</li>
+            <li>Clone the component's JS (if needed) and use appropriately.</li>
+          </ul>
+          <ul>
+            <li>
+              Modifiers can be applied as an extra
+              class on the parent container,<code>.tile-list</code> to transform the
+                          component in it's different versions.
+            </li>
+            <li>
+              Note that class-naming follows Block-Element--Modifier(BEM)
+              conventions.
+            </li>
+          </ul>
+          <hr/>
+          <h5>Available modifiers:</h5><code>.tile-list--horizontal</code><br/><code>.tile-list--block</code>
+          <!-- Code Begins-->
+          <hr/>
+          <!-- JADE Code-->
+          <h5 class="header__code-type">HTML </h5><em>JADE syntax also available in source files</em>
+          <pre><code>&lt;!-- Flip List Component--&gt;
+&lt;section class=&quot;tile-list tile-list--block&quot;&gt;
+  &lt;!-- Flip List Tile(This is the fragment you should repeat)--&gt;
+  &lt;div class=&quot;tile-list__item has-loaded&quot;&gt;
+    &lt;div onclick=&quot;this.parentNode.classList.toggle('is-active');&quot; class=&quot;tile-list__item__content&quot;&gt;
+      &lt;div class=&quot;tile-list__item__img--mock&quot;&gt;
+        &lt;div class=&quot;tile-list__item__controls&quot;&gt;
+          &lt;div class=&quot;tile-list__item__loader&quot;&gt;Loading&hellip;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div style=&quot;background-image:url('[YOUR_.GIF_URL_HERE]')&quot; class=&quot;tile-list__item__img&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;tile-list__item__bottom-bar&quot;&gt;
+      &lt;span&gt;Add actions here&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- /Flip List Tile--&gt;
+&lt;/section&gt;
+&lt;!-- /Flip List Component--&gt;
+
+
+&lt;script&gt;
+  window.onload = function() {
+
+    // clone &amp; freeze each Tile's `.gif` to static
+    $('.tile-list__item').each(function() {
+      var element = $(this);
+      freezeTileAnimation(element, 0.8);
+    })
+  }
+
+  /**
+  * Given a DOM element, it attaches a static copy of 1st frame of the .gif
+  * it contains.
+  *
+  * @param  {DOM elem} elem     The DOM element Tile to process
+  * @param  {Number}   scaling  Amount of scaling to apply.
+  */
+  function freezeTileAnimation(elem, scaling) {
+    var tile = $(elem);
+    var tileImg = $(elem).find('.tile-list__item__img').css('background-image');
+    var tileWidth = $(tile).width() / scaling;
+    var tileHeight = $(tile).height() / scaling;
+    tileImg = /^url\((['&quot;]?)(.*)\1\)$/.exec(tileImg)[2];
+
+    var sampledImg = new Image();
+    sampledImg.onload = function() {
+      var canvas = document.createElement('canvas');
+      canvas.width = tileWidth;
+      canvas.height = tileHeight;
+      var ctx = canvas.getContext('2d');
+      var sourceX = (this.width / 2) - (tileWidth / 2)
+      var sourceY = (this.height / 2) - (tileHeight / 2)
+      var sourceWidth = tileWidth;
+      var sourceHeight = tileHeight;
+      var destWidth = sourceWidth;
+      var destHeight = sourceHeight;
+      var destX = 0;
+      var destY = 0;
+      ctx.drawImage(this, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+      $(tile).find('.tile-list__item__img--mock').css('background-image',&quot;url('&quot;+canvas.toDataURL()+&quot;')&quot;);
+      $(tile).addClass('has-loaded');
+    };
+    sampledImg.src = tileImg;
+    sampledImg.crossOrigin = &quot;Anonymous&quot;;
+  }
+&lt;/script&gt;</code></pre>
+          <!-- SCSS Code-->
+          <hr/>
+          <h5 class="header__code-type">SCSS</h5>
+          <pre><code>/**
+ * List Component
+ */
+
+$white: #fff;
+$black: #000;
+$base-gray-light: #aaa;
+$base-bg-color: #fff;
+$base-color: #aaa;
+$base-color-action: #55ACEF;
+$base-color-secondary: #E55665;
+$base-border-radius: 4px;
+$base-border-width: 1px;
+$base-duration: 0.1s;
+$base-timing: ease-out;
+
+$base-height: 100%;
+$base-width: 19em;
+
+$base-item-height: 20em;
+$base-item-margin: 0.5em;
+
+$base-min-device-width: 420px;
+
+// Material Design Box Shadow
+@mixin md-box-shadow($level:"1") {
+  @if $level == "1" {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  } @else if $level == "2" {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  } @else if $level == "3" {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  }
+}
+
+.tile-list {
+  width: $base-width;
+  height: 100%;
+  margin: 0.5em auto;
+  padding-bottom: 2em; // space for scrolling end.
+  pointer-events: all;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  // variation horizontal modifier
+  &.tile-list--horizontal {
+    width: auto;
+    height: $base-item-height;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
+
+  // variation block modifier
+  &.tile-list--block {
+    width: auto;
+
+    @media (max-width: $base-min-device-width) {
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+}
+
+.tile-list__item {
+  position: relative;
+  width: 100%;
+  height: $base-item-height;
+  margin: $base-item-margin 0;
+  cursor: pointer;
+  @include md-box-shadow("1");
+
+  .button {
+    display: table-row;
+    width: 50%;
+    float: left;
+    border-left: 1px solid #eee;
+
+    &:first-child {
+      border-left: 0;
+      color: $base-color-action;
+    }
+    &:nth-child(2) {
+      color: $base-color-secondary;
+    }
+  }
+
+  // variation horizontal modifier
+  .tile-list--horizontal & {
+    width: $base-width;
+    display: inline-block;
+    margin: 0 1em 0 0;
+  }
+
+  // variation block modifier
+  .tile-list--block & {
+    display: inline-block;
+    width: $base-width;
+    margin: $base-item-margin;
+  }
+}
+
+.tile-list__item__content {
+  height: 100%;
+  position: relative;
+  transition: height $base-duration * 2 $base-timing,
+              transform $base-duration * 6 $base-timing;
+
+  .is-active & {
+    height: calc(100% - 3em);
+    transition: height $base-duration * 2 $base-timing,
+                transform $base-duration * 6 $base-timing;
+  }
+}
+
+.tile-list__item__bottom-bar {
+  width: 100%;
+  height: 0;
+  border-top: 1px solid $base-gray-light;
+  overflow: hidden;
+  transition: height $base-duration * 2 $base-timing;
+
+  .is-active & {
+    height: 3em;
+    transition: height $base-duration * 2 $base-timing;
+  }
+}
+
+.tile-list__item__img,
+.tile-list__item__img--mock {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  backface-visibility: hidden;
+}
+
+.tile-list__item__img {
+  display: none;
+
+  .is-active & {
+    display: block;
+  }
+}
+
+.tile-list__item__img--mock {
+  display: block;
+
+  .is-active & {
+    display: none;
+  }
+}
+
+// The following are optional.
+.tile-list__item__controls {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 4em;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  pointer-events: none;
+
+  .tile-list__item__loader {
+    color: $base-color-action;
+
+    .has-loaded & {
+      display: none;
+    }
+  }
+}
+
+</code></pre>
+        </div>
+        <h5 class="header__demo-instructions">Click/Tap on a Tile</h5>
+      </h3>
+    </h3>
+  </header>
+  <!-- Repeating the Tile List Component 15 times-->
+  <!-- Flip List Component-->
+  <section class="tile-list tile-list--block">
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-1.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-2.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-3.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-4.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-5.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-6.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-7.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-8.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-9.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-10.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-11.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-12.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-13.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-14.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+    <!-- Flip List Tile-->
+    <div class="tile-list__item has-loaded">
+      <div onclick="this.parentNode.classList.toggle('is-active');" class="tile-list__item__content">
+        <div class="tile-list__item__img--mock">
+          <div class="tile-list__item__controls">
+            <div class="tile-list__item__loader">Loading…</div>
+          </div>
+        </div>
+        <div style="background-image:url('/patterns/dist/tile-list/img/img-15.gif')" class="tile-list__item__img"></div>
+      </div>
+      <div class="tile-list__item__bottom-bar"><span>Add actions here</span></div>
+    </div>
+    <!-- /Flip List Tile-->
+  </section>
+  <!-- /Flip List Component-->
+  <script>
+    window.onload = function() {
+    
+    	// clone & freeze each Tile's `.gif` to static
+    	$('.tile-list__item').each(function() {
+    		var element = $(this);
+    		freezeTileAnimation(element, 0.8);
+    	})
+    }
+    
+    /**
+    * Given a DOM element, it attaches a static copy of 1st frame of the .gif
+    * it contains.
+    *
+    * @param	{DOM elem} elem		 The DOM element Tile to process
+    * @param	{Number}	 scaling	Amount of scaling to apply.
+    */
+    function freezeTileAnimation(elem, scaling) {
+    	var tile = $(elem);
+    	var tileImg = $(elem).find('.tile-list__item__img').css('background-image');
+    	var tileWidth = $(tile).width() / scaling;
+    	var tileHeight = $(tile).height() / scaling;
+    	tileImg = /^url\((['"]?)(.*)\1\)$/.exec(tileImg)[2];
+    
+    	var sampledImg = new Image();
+    	sampledImg.onload = function() {
+    		var canvas = document.createElement('canvas');
+    		canvas.width = tileWidth;
+    		canvas.height = tileHeight;
+    		var ctx = canvas.getContext('2d');
+    		var sourceX = (this.width / 2) - (tileWidth / 2)
+    		var sourceY = (this.height / 2) - (tileHeight / 2)
+    		var sourceWidth = tileWidth;
+    		var sourceHeight = tileHeight;
+    		var destWidth = sourceWidth;
+    		var destHeight = sourceHeight;
+    		var destX = 0;
+    		var destY = 0;
+    		ctx.drawImage(this, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+    		$(tile).find('.tile-list__item__img--mock').css('background-image',"url('"+canvas.toDataURL()+"')");
+    		$(tile).addClass('has-loaded');
+    	};
+    	sampledImg.src = tileImg;
+    	sampledImg.crossOrigin = "Anonymous";
+    }
+  </script>
+</div>

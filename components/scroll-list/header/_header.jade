@@ -1,0 +1,255 @@
+include /base/_index.jade
+
+header
+  h3
+    | Scroll-List--iOS
+    h3
+      h5 An iOS compatible scroll list with double action buttons
+      h5.header__usage-label(onclick="this.nextElementSibling.classList.toggle('is-visible')") 
+        | Get usage information.
+      .header__usage-info
+
+        p
+          | Scrolls with momentum-scrolling on iOS Webkit
+        p
+          | Delete button is a double-action button, negating the 
+          | need for confirmatory/blocking modals
+          
+        hr
+        
+        ul
+          li
+            | The jQuery snippet is mandatory to be used alongside this block
+            | for select/double-action button behaviours. 
+            | If you don't need these behaviours, you can skip including any JS.
+
+        ul
+          li Clone the element's HTML
+          li Clone the component's SCSS and tweak the variables as you see fit.
+          li Clone the component's JS (if needed) and use appropriately.
+
+        ul
+          li
+            | Modifiers can be applied as an extra
+            | class on the parent container,
+            code .scroll-list
+            |  to transform the
+            |             component in it's different versions.
+          li
+            | Note that class-naming follows Block-Element--Modifier(BEM)
+            | conventions.
+            
+        hr
+        
+        h5 Available modifiers:
+        code .scroll-list--horizontal
+
+        // Code Begins
+        hr
+        // JADE Code
+        h5.header__code-type HTML 
+        em JADE syntax also available in source files
+        pre
+          code.
+            &lt;!-- Scroll List Component--&gt;
+            &lt;section class=&quot;scroll-list__container&quot;&gt;
+              &lt;div class=&quot;scroll-list__button-container&quot;&gt;Button&lt;/div&gt;
+              &lt;div class=&quot;scroll-list&quot;&gt;
+                &lt;!-- List Item (This is the fragment you should be repeating)--&gt;
+                &lt;div class=&quot;scroll-list__item&quot;&gt;
+                  &lt;span class=&quot;scroll-list__item__label&quot;&gt;Item&lt;/span&gt;
+                  &lt;span class=&quot;scroll-list__item__delete-button&quot;&gt;
+                    &lt;i class=&quot;material-icons&quot;&gt;delete&lt;/i&gt;
+                    &lt;span class=&quot;scroll-list-item__delete-button__confirm&quot;&gt;Delete&lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;!-- /List Item--&gt;
+            &lt;/section&gt;
+            &lt;!-- /Scroll List Component--&gt;
+
+
+            &lt;script&gt;
+              $(document).ready(function() {
+
+                // Select
+                $(document).on('click touchend', '.scroll-list__item', function(e) {
+                  $('.scroll-list__item').removeClass('is-active');
+                  $(this).addClass('is-active');
+                })
+
+                // Arm Deletion
+                $(document).on('click touchend', '.scroll-list__item__delete-button', function(e) {
+                  $(this).addClass('is-primed');
+                  var self = this;
+                  setTimeout(function() {
+                    $(self).removeClass('is-primed');
+                  }, 2000)
+                });
+
+              });
+            &lt;/script&gt;
+
+        // SCSS Code
+        hr
+        h5.header__code-type SCSS
+        pre
+          code.
+            /**
+             * List Component
+             */
+
+            $scroll-list-height: 15em;
+            $scroll-list-bg-color: #fff;
+            $scroll-list-color: #aaa;
+            $scroll-list-color-action: #007AFF;
+            $scroll-list-color-danger: #FF2D55;
+            $scroll-list-border-radius: 4px;
+            $scroll-list-border-width: 1px;
+            $scroll-list-spacer-height: 3.5em;
+            $scroll-list-base-duration: 0.1s;
+            $scroll-list-base-timing: linear;
+            $white: #fff;
+
+            .scroll-list__container {
+              margin: 0 auto;
+              width: 9em;
+              height: $scroll-list-height;
+            }
+
+            .scroll-list__button-container {
+              padding: 1em 0em;
+              color: $white;
+              text-align: center;
+              background-color: $scroll-list-color-action;
+              border-radius: $scroll-list-border-radius;
+            }
+
+            .scroll-list {
+              max-height: 100%;
+              margin-top: 0.5em;
+              padding: 6px; // space for scaled first active item
+              pointer-events: all;
+              overflow-y: scroll;
+              overflow-x: hidden;
+              -webkit-overflow-scrolling: touch;
+              -webkit-transform: translateZ(0px);
+              -webkit-transform: translate3d(0,0,0);
+              -webkit-perspective: 1000;
+
+              &::-webkit-scrollbar {
+                width: 0;
+                height: 0;
+              }
+
+              &.scroll-list--horizontal {
+                white-space: nowrap;
+                overflow-y: hidden;
+                overflow-x: scroll;
+              }
+            }
+
+            .scroll-list__item {
+              background-color: $scroll-list-bg-color;
+              color: $scroll-list-color;
+              border: $scroll-list-border-width solid;
+              border-radius: $scroll-list-border-radius;
+              margin-bottom: 0.5em;
+              cursor: pointer;
+
+              transition: transform $scroll-list-base-duration $scroll-list-base-timing,
+                color $scroll-list-base-duration $scroll-list-base-timing,
+                border-color $scroll-list-base-duration $scroll-list-base-timing;
+
+              -webkit-transition: transform $scroll-list-base-duration $scroll-list-base-timing,
+                color $scroll-list-base-duration $scroll-list-base-timing,
+                border-color $scroll-list-base-duration $scroll-list-base-timing;
+
+              &.is-active {
+                color: $scroll-list-color-action;
+                border-color: $scroll-list-color-action;
+                transition: transform color border-color $scroll-list-base-duration*4 $scroll-list-base-timing;
+                transform: scale(1.05,1.05);
+                -webkit-transform: scale(1.05,1.05);
+              }
+
+              .scroll-list--horizontal & {
+                display: inline-block;
+                margin: 0 1em 0 0;
+              }
+            }
+
+            .scroll-list__item__label,
+            .scroll-list__item__delete-button {
+              display: table-cell;
+              vertical-align: middle;
+              padding: 0.75em 0.1em;
+              text-align: center;
+            }
+
+            .scroll-list__item__label {
+              pointer-events: none; // clicks/taps on whole item itself target the parent.
+              width: 4.5em;
+            }
+
+            .scroll-list__item__delete-button {
+              position: relative;
+              width: 3.5em;
+              text-align: right;
+
+              i,span {
+                position: absolute;
+                margin: auto;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                text-align: center;
+                transition: transform $scroll-list-base-duration linear;
+              }
+
+              /**
+               * Double-action delete button
+               *
+               * If parent of i & span has `is-primed` class
+               * we show `span`, otherwise the icon `i`.
+               *
+               * - `i` and `span` are positioned absolute on top of each other
+               *    and we use `scale(0,0)` & `scale(1,1)` to show/hide them.
+               */
+              i {
+                color: $scroll-list-color;
+                padding: 0.4em 0;
+                pointer-events: none;
+                transform: scale(1,1);
+                -webkit-transform: scale(1,1);
+              }
+              span {
+                font-size: 0.8em;
+                padding: 1.1em 0;
+                transform: scale(0,0);
+                -webkit-transform: scale(0,0);
+              }
+
+              &.is-primed {
+                color: $scroll-list-color-danger;
+                border-left: $scroll-list-border-width solid;
+                i {
+                  transform: scale(0,0);
+                  -webkit-transform: scale(0,0);
+                }
+                span {
+                  transform: scale(1,1);
+                  -webkit-transform: scale(1,1);
+
+                  &:active {
+                    background-color: $scroll-list-color-danger;
+                    color: #fff;
+                  }
+                }
+              }
+            }
+            // /List component
+
+
+      h5.header__demo-instructions
+        | Select/Delete a List Item

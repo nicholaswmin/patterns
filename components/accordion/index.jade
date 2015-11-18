@@ -1,0 +1,43 @@
+link(rel='stylesheet', href='/patterns/dist/accordion/css/styles.css')
+
+// Header(ignore this, only for informative purposes)
+include /accordion/header/_header.jade
+
+-var n = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15'];
+
+each val in n
+  .accordion.accordion--folded(onclick="this.classList.toggle('accordion--folded')")
+    div.accordion__title
+      h1 The Origin of Species
+      h2 By means of Natural Selection
+    .accordion__author
+      img.accordion-text__profile__img(src="https://scontent-frt3-1.xx.fbcdn.net/hphotos-xap1/t31.0-8/10496087_834971563179680_2504282135545325567_o.jpg")
+      h5 By Charles Darwin
+    .accordion__author__details
+      h6 Fellow of the Royal, Geological, etc Societies;
+      h6 Author of 'Journal Of Researches During H.M.S. Beagles's voyage round the world.'
+    .accordion-text__content
+      p
+        | Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        | It has roots in a piece of classical Latin literature from 45 BC, 
+        | making it over 2000 years old. Richard McClintock, a Latin professor at 
+        | Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        | Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        | the cites of the word in classical literature, discovered the undoubtable 
+        | source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        | Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        | in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        | during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        | sit amet..", comes from a line in section 1.10.32.
+      p
+        | Contrary to popular belief, Lorem Ipsum is not simply random text. 
+        | It has roots in a piece of classical Latin literature from 45 BC, 
+        | making it over 2000 years old. Richard McClintock, a Latin professor at 
+        | Hampden-Sydney College in Virginia, looked up one of the more obscure 
+        | Latin words, consectetur, from a Lorem Ipsum passage, and going through 
+        | the cites of the word in classical literature, discovered the undoubtable 
+        | source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus 
+        | Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written 
+        | in 45 BC. This book is a treatise on the theory of ethics, very popular 
+        | during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor 
+        | sit amet..", comes from a line in section 1.10.32.
