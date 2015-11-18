@@ -1,0 +1,189 @@
+/**
+ * Includes styles that might be used in:
+ *
+ * - each components _header(instructions,titles etc). (header- namespaced)
+ * - homepage where all components are shown (components-page- namespaced)
+ * - Styles found here must be correctly namespaced to prevent CSS leakage
+ * 	 in each component.
+ */
+
+// Base vars
+$header-white: #fff;
+$header-black: #000;
+$header-gray-darker: #333;
+$header-gray-dark: #666;
+$header-gray: #aaa;
+$header-gray-light: #ccc;
+$header-brand-primary: #007AFF;
+
+$header-container-width: 1200px;
+
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,900);
+
+// Mixins
+@mixin md-box-shadow($level:"1") {
+	@if $level == "1" {
+		box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	} @else if $level == "2" {
+		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	} @else if $level == "3" {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	}
+}
+
+@mixin user-select-none() {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px #fff inset;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+		outline: none;
+}
+
+img {
+	width: 100%;
+	height: auto;
+}
+
+/**
+ * Buttons
+ */
+
+.button {
+	border: 0;
+	color: $header-brand-primary;
+	background-color: transparent;
+	border: 1px solid;
+	padding: 1em 2.5em;
+	text-transform: uppercase;
+	cursor: pointer;
+	white-space: nowrap;
+
+	i,
+	span {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	i {
+		padding-right: 0.25em;
+	}
+
+	&.button--block {
+		width: 100%;
+		height: 100%;
+		border: 0;
+		align-items: center;
+		display: flex;
+		justify-content: center;
+	}
+}
+
+
+html,
+body {
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	width: 100%;
+	height: 100%;
+}
+
+header {
+	max-width: 50em;
+	margin: 0 auto;
+	padding: 1em;
+	text-align: center;
+
+	h1,h2,h3,h4,h5,h6 {
+		margin: 1em 0;
+		font-weight: normal;
+	}
+
+	h3 {
+		font-size: 2em;
+		color: $header-gray-darker;
+	}
+
+	h5 {
+		font-size: 1.2em;
+		color: $header-gray-dark;
+		margin-top: 1.5em; //because it separates sections as 'section header'
+	}
+
+	p {
+		font-size: 1em;
+		color: $header-gray;
+	}
+
+	em {
+		font-size: 0.8em;
+	}
+
+	ul {
+		text-align: left;
+		color: $header-gray-dark;
+		li {
+			margin: 0.25em;
+		}
+	}
+
+	hr {
+		display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid $header-gray-light;;
+    margin: 2em 0;
+    padding: 0;
+	}
+
+	pre,
+	code {
+		display: inline-block;
+		font-size: 1em;
+		line-height: 2em;
+		text-align: left;
+	}
+
+	.header__demo-instructions {
+		color: $header-gray;
+	}
+
+	.header__usage-label {
+		color: $header-brand-primary;
+		cursor: pointer;
+		@include user-select-none;
+	}
+
+	.header__usage-info {
+		display: none;
+
+		&.is-visible {
+			display: block;
+		}
+	}
+
+	.header__code-type {
+		color: lighten($header-brand-primary,10%);
+	}
+}
+
+.components-page__container {
+	max-width: $header-container-width;
+	margin: 0 auto;
+	hr {
+		display: block;
+		height: 1px;
+		border: 0;
+		border-top: 1px solid $header-gray-light;;
+		margin: 2em 0;
+		padding: 0;
+	}
+}

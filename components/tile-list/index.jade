@@ -1,0 +1,68 @@
+link(rel='stylesheet', href='/patterns/dist/tile-list/css/styles.css')
+
+// Header(ignore this, only for informative purposes)
+include ./header/_header.jade
+
+// Repeating the Tile List Component 15 times
+-var n = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15'];
+// Flip List Component
+section.tile-list.tile-list--block
+	each val in n
+		// Flip List Tile
+		.tile-list__item.has-loaded
+			.tile-list__item__content(onclick="this.parentNode.classList.toggle('is-active');")
+				.tile-list__item__img--mock
+					.tile-list__item__controls
+						.tile-list__item__loader
+							| Loading…
+				.tile-list__item__img(style="background-image:url('/patterns/dist/tile-list/img/img-"+val+".gif')")
+			.tile-list__item__bottom-bar
+				span Add actions here
+		// /Flip List Tile
+// /Flip List Component
+
+script.
+	window.onload = function() {
+
+		// clone & freeze each Tile's `.gif` to static
+		$('.tile-list__item').each(function() {
+			var element = $(this);
+			freezeTileAnimation(element, 0.8);
+		})
+	}
+
+	/**
+	* Given a DOM element, it attaches a static copy of 1st frame of the .gif
+	* it contains.
+	*
+	* @param	{DOM elem} elem		 The DOM element Tile to process
+	* @param	{Number}	 scaling	Amount of scaling to apply.
+	*/
+	function freezeTileAnimation(elem, scaling) {
+		var tile = $(elem);
+		var tileImg = $(elem).find('.tile-list__item__img').css('background-image');
+		var tileWidth = $(tile).width() / scaling;
+		var tileHeight = $(tile).height() / scaling;
+		tileImg = /^url\((['"]?)(.*)\1\)$/.exec(tileImg)[2];
+
+		var sampledImg = new Image();
+		sampledImg.onload = function() {
+			var canvas = document.createElement('canvas');
+			canvas.width = tileWidth;
+			canvas.height = tileHeight;
+			var ctx = canvas.getContext('2d');
+			var sourceX = (this.width / 2) - (tileWidth / 2)
+			var sourceY = (this.height / 2) - (tileHeight / 2)
+			var sourceWidth = tileWidth;
+			var sourceHeight = tileHeight;
+			var destWidth = sourceWidth;
+			var destHeight = sourceHeight;
+			var destX = 0;
+			var destY = 0;
+			ctx.drawImage(this, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+			$(tile).find('.tile-list__item__img--mock').css('background-image',"url('"+canvas.toDataURL()+"')");
+			$(tile).addClass('has-loaded');
+		};
+		sampledImg.src = tileImg;
+		sampledImg.crossOrigin = "Anonymous";
+	}

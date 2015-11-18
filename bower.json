@@ -1,0 +1,25 @@
+{
+  "name": "patterns",
+  "description": "Collection of Front-end components",
+  "main": "app.js",
+  "authors": [
+    "@nicholaswmin"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "patterns",
+    "css",
+    "sass",
+    "components"
+  ],
+  "moduleType": [],
+  "homepage": "none",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {}
+}

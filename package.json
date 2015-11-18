@@ -1,0 +1,25 @@
+{
+  "name": "patterns",
+  "version": "1.0.0",
+  "description": "Collection of Front-end components",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "patterns",
+    "css",
+    "sass",
+    "components"
+  ],
+  "author": "@nicholaswmin",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.5",
+    "jade": "^1.11.0"
+  }
+}
