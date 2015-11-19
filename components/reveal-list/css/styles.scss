@@ -1,0 +1,97 @@
+
+/**
+ * List Component
+ */
+
+$white: #fff;
+$black: #000;
+$reveal-list-gray-light: #aaa;
+$reveal-list-bg-color: #fff;
+$reveal-list-color: #aaa;
+$reveal-list-color-action: #55ACEF;
+$reveal-list-color-secondary: #E55665;
+$reveal-list-border-radius: 4px;
+$reveal-list-border-width: 1px;
+$reveal-list-duration: 0.1s;
+$reveal-list-timing: ease-out;
+
+$reveal-list-height: 100%;
+$reveal-list-width: 19em;
+
+$reveal-list-item-width: 15em;
+$reveal-list-item-height: 15em;
+$reveal-list-item-margin: 2em;
+
+$reveal-list-min-device-width: 460px;
+
+// Material Design Box Shadow
+@mixin md-box-shadow($level:"1") {
+  @if $level == "1" {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  } @else if $level == "2" {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  } @else if $level == "3" {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  }
+}
+
+
+.reveal-list__item {
+  position: relative;
+  display: inline-block;
+  width: $reveal-list-item-width;
+	height: $reveal-list-item-height;
+  margin: $reveal-list-item-margin;
+  cursor: pointer;
+	@include md-box-shadow("1");
+  z-index: 4;
+  transition: all 0.2s ease-in;
+
+  &.is-active {
+    z-index: 999;
+    box-shadow: none;
+    transition: all 0.1s ease-in;
+  }
+
+  .reveal-list__item__img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    backface-visibility: hidden;
+  }
+}
+
+.reveal-list__item__img {
+  z-index: 1;
+  transition: all 0.3s ease-in;
+
+  .is-active & {
+    transform-origin: bottom;
+    transform: scale(1) translate(-25%, 0) rotate(-25deg);
+    @include md-box-shadow("1");
+
+    transition: all 0.2s ease-in;
+  }
+}
+
+.reveal-list__item__img--2 {
+  z-index: 2;
+
+  .is-active & {
+    transform: scale(1) translate(25%, 0) rotate(25deg);
+  }
+}
+
+.reveal-list__item__img--3 {
+  z-index: 3;
+
+  .is-active & {
+    transform: scale(1) translate(0, 0) rotate(0);
+  }
+}

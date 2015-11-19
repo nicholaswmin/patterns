@@ -1,0 +1,19 @@
+link(rel='stylesheet', href='/patterns/dist/reveal-list/css/styles.css')
+
+// Header(ignore this, only for informative purposes)
+include ./header/_header.jade
+
+// Repeating the Tile List Component 15 times
+-var n = ['1','2','3'];
+// Flip List Component
+section.reveal-list
+	each val in n
+		// Flip List Tile
+		.reveal-list__item
+			.reveal-list__item__content(onclick="this.parentNode.classList.toggle('is-active');")
+				.reveal-list__item__img(style="background-image:url('https://d3ui957tjb5bqd.cloudfront.net/images/screenshots/products/9/93/93965/flat-design-office-desk-o.jpg?1396963182')")
+				.reveal-list__item__img.reveal-list__item__img--2(style="background-image:url('http://www.awwwards.com/awards/images/2013/07/flat-design-07b.jpg')")
+				.reveal-list__item__img.reveal-list__item__img--3(style="background-image:url('http://netdna.webdesignerdepot.com/uploads/2013/04/buffalo.jpg')")
+
+		// /Flip List Tile
+// /Flip List Component
